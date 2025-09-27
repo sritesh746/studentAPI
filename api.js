@@ -58,72 +58,7 @@ async function startServer() {
     }
   });
 
-  // Get student by roll_no
-  app.get("/students/roll", async (req, res) => {
-    try {
-      const { roll_no } = req.body;
-      if (!roll_no) return res.status(400).json({ message: "Roll number is required" });
-
-      const student = await Student.findOne({ roll_no });
-      if (!student) return res.status(404).json({ message: "Data not exist" });
-
-      res.json(student);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  // Add new student
-  app.post("/add", async (req, res) => {
-    try {
-      const { roll } = req.body;
-      if (!roll) return res.status(400).json({ message: "Roll number is required" });
-
-      const existing = await Student.findOne({ roll });
-      if (existing) return res.status(400).json({ message: "Already admitted by this Roll Number" });
-
-      await Student.insertOne(req.body);
-      res.status(201).json({ message: "Student added successfully", student: req.body });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  // Update student
-  app.put("/update", async (req, res) => {
-    try {
-      const { roll, ...updateData } = req.body;
-      if (!roll) return res.status(400).json({ message: "Roll number is required" });
-
-      const updated = await Student.findOneAndUpdate(
-        { roll: parseInt(roll) },
-        { $set: updateData },
-        { returnDocument: "after" }
-      );
-
-      if (!updated.value) return res.status(404).json({ message: "Student not found" });
-
-      res.json({ message: "Student updated successfully", student: updated.value });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  // Delete student
-  app.delete("/delete", async (req, res) => {
-    try {
-      const { roll } = req.body;
-      if (!roll) return res.status(400).json({ message: "Roll number is required" });
-
-      const deleted = await Student.findOneAndDelete({ roll: parseInt(roll) });
-      if (!deleted.value) return res.status(404).json({ message: "Student not found" });
-
-      res.json({ message: "Student deleted successfully", student: deleted.value });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
+  
   // ==========================
   // START SERVER
   // ==========================
