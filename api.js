@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+const cors = require("cors");
+app.use(cors());
 const app = express();
 app.use(express.json());
 
@@ -19,6 +20,7 @@ if (!MONGO_URI) {
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 20000, // 20s,
 })
 .then(() => console.log("✅ Connected to MongoDB Atlas"))
 .catch(err => {
