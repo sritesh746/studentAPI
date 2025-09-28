@@ -44,11 +44,9 @@ const Student = mongoose.model("Student", studentSchema);
 // ==========================
 // Routes
 // ==========================
-app.get("/", (req, res) => {
-  res.send("✅ API is running!");
-});
+console.log("Its is working......")
 
-app.get("/students", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const students = await Student.find();
     res.json(students);
